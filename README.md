@@ -1,6 +1,6 @@
 # PDS4 Tools
 
-Tools to generate and user PDS4 metadata.
+Tools to generate and use PDS4 metadata.
 
 ## Installation
 
