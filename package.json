@@ -19,7 +19,7 @@
     "tools"
   ],
   "author": "Todd King <tking@igpp.ucla.edu>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/nasa-pds/pds4-tools/issues"
   },

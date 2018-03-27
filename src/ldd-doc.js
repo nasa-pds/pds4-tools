@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Generate documentation for an LDD.
  *
