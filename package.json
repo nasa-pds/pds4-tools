@@ -11,7 +11,7 @@
     "url": "git+https://github.com/nasa-pds/pds4-tools.git"
   },
   "bin": {
-	"pds-ldd-doc": "./src/ldd-doc.js"
+    "pds-ldd-doc": "./src/ldd-doc.js"
   },
   "keywords": [
     "PDS",
@@ -23,5 +23,10 @@
   "bugs": {
     "url": "https://github.com/nasa-pds/pds4-tools/issues"
   },
-  "homepage": "https://github.com/nasa-pds/pds4-tools#readme"
+  "homepage": "https://github.com/nasa-pds/pds4-tools#readme",
+  "dependencies": {
+    "fast-xml-parser": "^3.3.6",
+    "path": "^0.12.7",
+    "yargs": "^11.0.0"
+  }
 }
