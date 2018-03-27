@@ -1,6 +1,6 @@
 {
   "name": "pds4-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools to generate and user PDS4 metadata.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/nasa-pds/pds4-tools.git"
   },
   "bin": {
-	"pds-ldd-doc": "src/ldd-doc.js"
+	"pds-ldd-doc": "./src/ldd-doc.js"
   },
   "keywords": [
     "PDS",
