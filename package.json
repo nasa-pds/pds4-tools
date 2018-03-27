@@ -1,0 +1,27 @@
+{
+  "name": "pds4-tools",
+  "version": "0.1.0",
+  "description": "Tools to generate and user PDS4 metadata.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nasa-pds/pds4-tools.git"
+  },
+  "bin": {
+	"pds-ldd-doc": "src/ldd-doc.js"
+  },
+  "keywords": [
+    "PDS",
+    "PDS4",
+    "tools"
+  ],
+  "author": "Todd King <tking@igpp.ucla.edu>",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/nasa-pds/pds4-tools/issues"
+  },
+  "homepage": "https://github.com/nasa-pds/pds4-tools#readme"
+}
