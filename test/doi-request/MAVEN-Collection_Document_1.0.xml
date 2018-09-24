@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="pds4.xsl"?>
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.sch" 
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/mvn/v1/PDS4_MVN_1000.sch"
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Collection 
+   xmlns="http://pds.nasa.gov/pds4/pds/v1"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvn="http://pds.nasa.gov/pds4/mission/mvn/v1"
+   xsi:schemaLocation="
+   http://pds.nasa.gov/pds4/pds/v1
+   http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.xsd
+    
+   http://pds.nasa.gov/pds4/mission/mvn/v1
+   http://pds.nasa.gov/pds4/mvn/v1/PDS4_MVN_1000.xsd
+   ">
+   <Identification_Area>
+      <logical_identifier>urn:nasa:pds:maven.anc:document</logical_identifier>
+      <version_id>1.0</version_id>
+      <title>MAVEN Ancillary Archive Document Collection</title>
+      <information_model_version>1.4.0.0</information_model_version>
+      <product_class>Product_Collection</product_class>
+      <Citation_Information>
+         <publication_year>2015</publication_year>
+         <keyword>DRF</keyword>
+         <description>
+            This collection contains documents related to the MAVEN Ancillary Data.
+         </description>
+      </Citation_Information>
+      <Modification_History>
+         <Modification_Detail>
+            <modification_date>2015-04-30</modification_date>
+            <version_id>1.0</version_id>
+            <description>Initial Version</description>
+         </Modification_Detail>
+      </Modification_History>
+   </Identification_Area>
+   <Context_Area>
+      <Investigation_Area>
+         <name>Mars Atmosphere and Volatile EvolutioN</name>
+         <type>Mission</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:investigation:mission.maven</lid_reference>
+            <reference_type>collection_to_investigation</reference_type>
+         </Internal_Reference>
+      </Investigation_Area>
+   </Context_Area>
+   <Reference_List>
+   </Reference_List>
+   <Collection>
+      <collection_type>Document</collection_type>
+      <description>
+         This collection contains documents related to the MAVEN Ancillary Data.
+      </description>
+   </Collection>
+   <File_Area_Inventory>
+      <File>
+         <file_name>Collection_Document_1.0.csv</file_name>
+         <creation_date_time>2015-04-30T16:30:28</creation_date_time>
+         <file_size unit="byte">44</file_size>
+         <records>65</records>
+         <md5_checksum>918520b3cb8e58cdfa62e6df5795cdbd</md5_checksum>
+      </File>
+      <Inventory>
+         <offset unit="byte">0</offset>
+         <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+         <records>1</records>                                                                        
+         <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+         <field_delimiter>Comma</field_delimiter>
+         <Record_Delimited>
+            <fields>2</fields>
+            <groups>0</groups>
+            <maximum_record_length unit="byte">257</maximum_record_length>               
+            <Field_Delimited>
+               <name>Member_Status</name>
+               <field_number>1</field_number>
+               <data_type>ASCII_String</data_type>
+               <maximum_field_length unit="byte">1</maximum_field_length>
+            </Field_Delimited>
+            <Field_Delimited>
+               <name>LIDVID_LID</name>
+               <field_number>2</field_number>
+               <data_type>ASCII_LIDVID_LID</data_type>
+               <maximum_field_length unit="byte">255</maximum_field_length>    
+            </Field_Delimited>
+         </Record_Delimited>
+         <reference_type>inventory_has_member_product</reference_type>
+     </Inventory>
+   </File_Area_Inventory> 
+</Product_Collection>
+

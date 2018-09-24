@@ -16,7 +16,7 @@ const fastXmlParser = require('fast-xml-parser');
 // Configure the app
 var options  = yargs
 	.version('1.0.0')
-	.usage('$0 [args] <files...>')
+	.usage('Generate documentation for an PDS4 LDD.\n\nRead and LDD specification file and generate documentation in Github Flavored Markdown.\n\n$0 [args] <files...>')
 	.example('$0 example.xml', 'generate documentation for the LDD specification')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
 	.showHelpOnFail(false, "Specify --help for available options")

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="pds4.xsl"?>
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.sch" 
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/mission/mvn/v1/PDS4_MVN_1030.sch"
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Collection
+   xmlns="http://pds.nasa.gov/pds4/pds/v1"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvn="http://pds.nasa.gov/pds4/mission/mvn/v1"
+   xsi:schemaLocation="
+      http://pds.nasa.gov/pds4/pds/v1
+      http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.xsd
+
+      http://pds.nasa.gov/pds4/mission/mvn/v1
+      http://pds.nasa.gov/pds4/mission/mvn/v1/PDS4_MVN_1030.xsd
+    ">
+   <Identification_Area>
+      <logical_identifier>urn:nasa:pds:maven.anc:data.events</logical_identifier>
+      <version_id>3.6</version_id>
+      <title>MAVEN Events List Data Collection</title>
+      <information_model_version>1.4.0.0</information_model_version>
+      <product_class>Product_Collection</product_class>
+      <Citation_Information>
+         <publication_year>2018</publication_year>
+         <description>
+            This collection contains the MAVEN mission events file including events from the MAVEN Payload Operations Center events database, and MAVEN science events.
+         </description>
+      </Citation_Information>
+      <Modification_History>
+         <Modification_Detail>
+            <modification_date>2018-08-14</modification_date>
+            <version_id>3.6</version_id>
+            <description>MAVEN Release 14</description>
+         </Modification_Detail>
+      </Modification_History>
+   </Identification_Area>
+   <Context_Area>
+      <Time_Coordinates>
+         <start_date_time>2013-12-03T16:30:03Z</start_date_time>
+         <stop_date_time>2018-05-14T23:43:01Z</stop_date_time>
+      </Time_Coordinates>
+      <Primary_Result_Summary>
+         <purpose>Engineering</purpose>
+         <processing_level>Raw</processing_level>
+      </Primary_Result_Summary>
+      <Investigation_Area>
+         <name>Mars Atmosphere and Volatile EvolutioN Mission</name>
+         <type>Mission</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:investigation:mission.maven</lid_reference>
+            <reference_type>collection_to_investigation</reference_type>
+         </Internal_Reference>
+      </Investigation_Area>
+      <Observing_System>
+         <Observing_System_Component>
+            <name>MAVEN</name>
+            <type>Spacecraft</type>   
+            <Internal_Reference>
+               <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.maven</lid_reference>
+               <reference_type>is_instrument_host</reference_type>
+            </Internal_Reference>
+         </Observing_System_Component>
+      </Observing_System>
+      <Target_Identification>
+         <name>Solar Wind</name>
+         <type>Plasma Stream</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:target:plasma_stream.solar_wind</lid_reference>
+            <reference_type>collection_to_target</reference_type>
+         </Internal_Reference>
+      </Target_Identification>
+      <Target_Identification>
+         <name>Mars</name>
+         <type>Planet</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:target:planet.mars</lid_reference>
+            <reference_type>collection_to_target</reference_type>
+         </Internal_Reference>
+      </Target_Identification>
+      <Mission_Area>
+         <MAVEN xmlns="http://pds.nasa.gov/pds4/mission/mvn/v1">
+            <mission_phase_name>Cruise</mission_phase_name>
+            <mission_phase_name>Mars Orbital Insertion</mission_phase_name>
+            <mission_phase_name>Transition</mission_phase_name>
+            <mission_phase_name>Prime Mission</mission_phase_name>
+            <mission_phase_name>EM-1</mission_phase_name>
+            <mission_phase_name>EM-2</mission_phase_name>
+         </MAVEN>
+      </Mission_Area>
+   </Context_Area>
+   <Reference_List>
+
+   </Reference_List>
+   <Collection>
+      <collection_type>Data</collection_type>
+      <description>
+         This collection contains the MAVEN mission events file including events from the MAVEN Payload Operations Center events database, and MAVEN science events.
+      </description>
+   </Collection>
+   <File_Area_Inventory>
+      <File>
+         <file_name>collection_data_events_3.6.csv</file_name>
+         <creation_date_time>2018-08-14T20:48:00</creation_date_time>
+         <file_size unit="byte">1794</file_size>
+         <md5_checksum>f09727526bdbdd3271d6bf4ea5333728</md5_checksum>
+      </File>
+      <Inventory>
+         <offset unit="byte">0</offset>
+         <parsing_standard_id>PDS DSV 1</parsing_standard_id>
+         <records>19</records>
+         <record_delimiter>Carriage-Return Line-Feed</record_delimiter>
+         <field_delimiter>Comma</field_delimiter>
+         <Record_Delimited>
+            <fields>2</fields>
+            <groups>0</groups>
+            <maximum_record_length unit="byte">257</maximum_record_length>               
+            <Field_Delimited>
+               <name>Member_Status</name>
+               <field_number>1</field_number>
+               <data_type>ASCII_String</data_type>
+               <maximum_field_length unit="byte">1</maximum_field_length>
+            </Field_Delimited>
+            <Field_Delimited>
+               <name>LIDVID_LID</name>
+               <field_number>2</field_number>
+               <data_type>ASCII_LIDVID_LID</data_type>
+               <maximum_field_length unit="byte">255</maximum_field_length>    
+            </Field_Delimited>
+         </Record_Delimited>
+         <reference_type>inventory_has_member_product</reference_type>
+      </Inventory>
+   </File_Area_Inventory>
+</Product_Collection>
+
