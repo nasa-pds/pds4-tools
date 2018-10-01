@@ -1,6 +1,6 @@
 {
   "name": "pds4-tools",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Tools to generate and use PDS4 metadata.",
   "main": "index.js",
   "scripts": {
