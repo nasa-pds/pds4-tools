@@ -30,6 +30,7 @@
     "fast-xml-parser": "^3.3.6",
     "n-readlines": "^1.0.0",
     "path": "^0.12.7",
+    "walk": "^2.3.14",
     "yargs": "^11.0.0"
   }
 }
