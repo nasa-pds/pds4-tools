@@ -12,7 +12,8 @@
   },
   "bin": {
     "pds-ldd-doc": "./src/ldd-doc/ldd-doc.js",
-    "pds-doi-request": "./src/doi-request/doi-request.js"
+    "pds-doi-request": "./src/doi-request/doi-request.js",
+    "pds-collection-builder": "./src/collection-builder/collection-builder.js"
   },
   "keywords": [
     "PDS",
@@ -27,6 +28,7 @@
   "homepage": "https://github.com/nasa-pds/pds4-tools#readme",
   "dependencies": {
     "fast-xml-parser": "^3.3.6",
+    "n-readlines": "^1.0.0",
     "path": "^0.12.7",
     "yargs": "^11.0.0"
   }

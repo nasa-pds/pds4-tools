@@ -208,7 +208,7 @@ var getKeywords = function(product) {
 }
 
 /**
- * APplication entry point.
+ * Application entry point.
  **/
 var main = function(args)
 {

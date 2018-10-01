@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.sch" 
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/alt/v1/PDS4_ALT_1000.sch"
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/particle/v1/PDS4_PARTICLE_1100.sch"
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/mission/mvn/v1/PDS4_MVN_1030.sch"
+   schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<Product_Observational
+   xmlns="http://pds.nasa.gov/pds4/pds/v1"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:alt="http://pds.nasa.gov/pds4/alt/v1"
+   xmlns:particle="http://pds.nasa.gov/pds4/particle/v1"
+   xmlns:mvn="http://pds.nasa.gov/pds4/mission/mvn/v1"
+   xsi:schemaLocation="
+      http://pds.nasa.gov/pds4/pds/v1
+      http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1400.xsd
+
+      http://pds.nasa.gov/pds4/alt/v1
+      http://pds.nasa.gov/pds4/alt/v1/PDS4_ALT_1000.xsd
+
+      http://pds.nasa.gov/pds4/particle/v1
+      http://pds.nasa.gov/pds4/particle/v1/PDS4_PARTICLE_1100.xsd
+
+      http://pds.nasa.gov/pds4/mission/mvn/v1
+      http://pds.nasa.gov/pds4/mission/mvn/v1/PDS4_MVN_1030.xsd
+ ">
+   <Identification_Area>
+      <logical_identifier>urn:nasa:pds:maven.static.c:data.2a_hkp:mvn_sta_l2_2a-hkp_20171024</logical_identifier>
+      <version_id>2.0</version_id>
+      <title>MAVEN STATIC Ion Spectra for 2017-10-24</title>
+      <information_model_version>1.4.0.0</information_model_version>
+      <product_class>Product_Observational</product_class>
+      <Citation_Information>
+         <author_list>McFadden, J. P.</author_list>
+         <publication_year>2018</publication_year>
+         <description>
+            Time-ordered, fully calibrated housekeeping data covering 2017-10-24.
+         </description>
+      </Citation_Information>
+      <Modification_History>
+         <Modification_Detail>
+            <modification_date>2018-05-16</modification_date>
+            <version_id>2.0</version_id>
+            <description>This file has been updated to correct the algorithm for generating the array of look directions blocked by the spacecraft (BINS_SC), and the algorithm for generating the dead-time and detector droop correction array (DEAD) was updated to use variable background rates.</description>
+         </Modification_Detail>
+      </Modification_History>
+   </Identification_Area>
+   <Observation_Area>
+      <Time_Coordinates>
+         <start_date_time>2017-10-24T00:00:31.659Z</start_date_time>
+         <stop_date_time>2017-10-24T23:59:53.733Z</stop_date_time>
+      </Time_Coordinates>
+      <Primary_Result_Summary>
+         <purpose>Engineering</purpose>
+         <processing_level>Calibrated</processing_level>
+      </Primary_Result_Summary>
+      <Investigation_Area>
+         <name>Mars Atmosphere and Volatile EvolutioN Mission</name>
+         <type>Mission</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:investigation:mission.maven</lid_reference>
+            <reference_type>data_to_investigation</reference_type>
+         </Internal_Reference>
+      </Investigation_Area>
+      <Observing_System>
+         <Observing_System_Component>
+            <name>MAVEN</name>
+            <type>Spacecraft</type>
+            <Internal_Reference>
+               <lid_reference>urn:nasa:pds:context:instrument_host:spacecraft.maven</lid_reference>
+               <reference_type>is_instrument_host</reference_type>
+            </Internal_Reference>
+         </Observing_System_Component>
+         <Observing_System_Component>
+            <name>STATIC</name>
+            <type>Instrument</type>
+            <Internal_Reference>
+               <lid_reference>urn:nasa:pds:context:instrument:static.maven</lid_reference>
+               <reference_type>is_instrument</reference_type>
+            </Internal_Reference>
+         </Observing_System_Component>
+      </Observing_System>
+      <Target_Identification>
+         <name>Mars</name>
+         <type>Planet</type>
+         <Internal_Reference>
+            <lid_reference>urn:nasa:pds:context:target:planet.mars</lid_reference>
+            <reference_type>data_to_target</reference_type>
+         </Internal_Reference>
+      </Target_Identification>
+      <Mission_Area>
+         <MAVEN xmlns="http://pds.nasa.gov/pds4/mission/mvn/v1">
+            <mission_phase_name>EM-2</mission_phase_name>
+            <spacecraft_clock_start_count>3.6836156527018E13</spacecraft_clock_start_count>
+            <spacecraft_clock_stop_count>3.684181634704999E13</spacecraft_clock_stop_count>
+            <Parameter>
+               <name>project_name</name>
+               <description>MAVEN</description>
+               <value>M</value>
+            </Parameter>
+            <Parameter>
+               <name>spacecraft</name>
+               <description>0</description>
+               <value>0</value>
+            </Parameter>
+            <Parameter>
+               <name>data_name</name>
+               <description>XX YYY where XX is the APID and YYY is the array abbreviation (64e2m, 32e32m, etc.)</description>
+               <value>H</value>
+            </Parameter>
+            <Parameter>
+               <name>apid</name>
+               <description>Application Process Identifier (APID) for the packet from which the data are taken.</description>
+               <value>2</value>
+            </Parameter>
+            <Parameter>
+               <name>num_dists</name>
+               <description>Number of measurements or times in the file</description>
+               <value>2687</value>
+            </Parameter>
+            <Parameter>
+               <name>nhkp</name>
+               <description>Number of housekeeping channels - 99</description>
+               <value>99</value>
+            </Parameter>
+         </MAVEN>
+      </Mission_Area>
+      <Discipline_Area>
+         <Alternate_Values xmlns="http://pds.nasa.gov/pds4/alt/v1">
+            <name>time values</name>
+            <Data_Values>
+               <Local_Internal_Reference>
+                  <local_identifier_reference>epoch</local_identifier_reference>
+                  <local_reference_type>data_values_to_data_values</local_reference_type>
+               </Local_Internal_Reference>
+            </Data_Values>
+            <Data_Values>
+               <Local_Internal_Reference>
+                  <local_identifier_reference>time_met</local_identifier_reference>
+                  <local_reference_type>data_values_to_data_values</local_reference_type>
+               </Local_Internal_Reference>
+            </Data_Values>
+            <Data_Values>
+               <Local_Internal_Reference>
+                  <local_identifier_reference>time_unix</local_identifier_reference>
+                  <local_reference_type>data_values_to_data_values</local_reference_type>
+               </Local_Internal_Reference>
+            </Data_Values>
+         </Alternate_Values>
+      </Discipline_Area>
+   </Observation_Area>
+   <Reference_List>
+      <Internal_Reference>
+         <lidvid_reference>urn:nasa:pds:maven.spice:spice_kernels:lsk_naif0012.tls::1.0</lidvid_reference>
+         <reference_type>data_to_spice_kernel</reference_type>
+         <comment>
+            This data file was processed using the SPICE leapsecond kernel: naif0012.tls.
+         </comment>
+      </Internal_Reference>
+      <Internal_Reference>
+         <lidvid_reference>urn:nasa:pds:maven.spice:spice_kernels:sclk_mvn_sclkscet_00055.tsc::1.0</lidvid_reference>
+         <reference_type>data_to_spice_kernel</reference_type>
+         <comment>
+            This data file was processed using the SPICE MAVEN SCLK kernel: MVN_SCLKSCET.00055.tsc.
+         </comment>
+      </Internal_Reference>
+   </Reference_List>
+   <File_Area_Observational>
+      <File>
+         <file_name>mvn_sta_l2_2a-hkp_20171024_v02_r00.cdf</file_name>
+         <creation_date_time>2018-05-16T16:59:19</creation_date_time>
+         <file_size unit="byte">1736678</file_size>
+         <md5_checksum>d664756c4fb3eba716ab1c880dde6e72</md5_checksum>
+      </File>
+      <Header>
+         <name>CDF Header</name>
+         <offset unit="byte">0</offset>
+         <object_length unit="byte">404</object_length>
+         <parsing_standard_id>CDF 3.4 ISTP/IACG</parsing_standard_id>
+      </Header>
+      <Array>
+         <name>TT2000</name>
+         <local_identifier>epoch</local_identifier>
+         <offset unit="byte">33226</offset>
+         <axes>1</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            UTC time from 01-Jan-2000 12:00:00.000 (including leap seconds), stored as an integer in nanoseconds.
+         </description>
+         <Element_Array>
+            <data_type>SignedMSB8</data_type>
+            <unit>nanosec</unit>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-0.0</invalid_constant>
+            <valid_maximum>3.595796016651621E-222</valid_maximum>
+            <valid_minimum>2.2152726415982762E-279</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>Mission Elapsed Time</name>
+         <local_identifier>time_met</local_identifier>
+         <offset unit="byte">55226</offset>
+         <axes>1</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Mission elapsed time for this data record.
+         </description>
+         <Element_Array>
+            <data_type>IEEE754MSBDouble</data_type>
+            <unit>sec</unit>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-1.0E31</invalid_constant>
+            <valid_maximum>8.5587834E8</valid_maximum>
+            <valid_minimum>0.0</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>SPICE Ephemeris Time</name>
+         <local_identifier>time_ephemeris</local_identifier>
+         <offset unit="byte">77226</offset>
+         <axes>1</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Time used by SPICE program.
+         </description>
+         <Element_Array>
+            <data_type>IEEE754MSBDouble</data_type>
+            <unit>sec</unit>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-1.0E31</invalid_constant>
+            <valid_maximum>1.293883209183998E9</valid_maximum>
+            <valid_minimum>4.380048671839981E8</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>Unix Time</name>
+         <local_identifier>time_unix</local_identifier>
+         <offset unit="byte">99226</offset>
+         <axes>1</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Unix time (elapsed seconds since 1970-01-01/00:00 without leap seconds) for this data record. This time is the center time of data collection.
+         </description>
+         <Element_Array>
+            <data_type>IEEE754MSBDouble</data_type>
+            <unit>sec</unit>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-1.0E31</invalid_constant>
+            <valid_maximum>2.24061114E9</valid_maximum>
+            <valid_minimum>1.3847328E9</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>hkp_raw</name>
+         <local_identifier>hkp_raw</local_identifier>
+         <offset unit="byte">121228</offset>
+         <axes>2</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Housekeeping array of dimension (NHKP) of raw housekeeping values.
+         </description>
+         <Element_Array>
+            <data_type>SignedMSB2</data_type>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+          <Axis_Array>
+            <axis_name>hkp_channel</axis_name>
+            <elements>99</elements>
+            <sequence_number>2</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-32768</invalid_constant>
+            <valid_maximum>32767</valid_maximum>
+            <valid_minimum>-32767</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>hkp</name>
+         <local_identifier>hkp</local_identifier>
+         <offset unit="byte">653762</offset>
+         <axes>2</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Housekeeping array of dimension (NHKP) of calibrated housekeeping values calculated from HKP_RAW and HKP_CONV.
+         </description>
+         <Element_Array>
+            <data_type>IEEE754MSBSingle</data_type>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+          <Axis_Array>
+            <axis_name>hkp_channel</axis_name>
+            <elements>99</elements>
+            <sequence_number>2</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-1.0E31</invalid_constant>
+            <valid_maximum>1.0E31</valid_maximum>
+            <valid_minimum>-1.0E31</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>Quality flag</name>
+         <local_identifier>quality_flag</local_identifier>
+         <offset unit="byte">1718312</offset>
+         <axes>1</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Quality flag: test pulser on (bit 0), diagnostic mode (bit 1), dead time correction &gt;2 flag (bit 2), detector droop correction &gt;2 flag (bit 3), dead time correction not at event time (bit 4), electrostatic attenuator problem (bit 5), attenuator change during accumulation (bit 6), mode change during accumulation (bit 7), LPW interference with data (bit 8), high background (bit 9), no background subtraction array (bit 10), missing spacecraft potential (bit 11), inflight calibration incomplete (bit 12), geometric factor problem (bit 13), ion suppression problem (bit 14), 0 (bit 15)
+         </description>
+         <Element_Array>
+            <data_type>SignedMSB2</data_type>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>epoch</axis_name>
+            <elements>2687</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-32768</invalid_constant>
+            <valid_maximum>32767</valid_maximum>
+            <valid_minimum>-32767</valid_minimum>
+         </Special_Constants>
+      </Array>
+      <Array>
+         <name>calib_constants</name>
+         <local_identifier>calib_constants</local_identifier>
+         <offset unit="byte">1727234</offset>
+         <axes>2</axes>
+         <axis_index_order>Last Index Fastest</axis_index_order>
+         <description>
+            Calibration parameters to convert raw housekeeping value to calibrated housekeeping with dimension (8,NHKP)
+         </description>
+         <Element_Array>
+            <data_type>IEEE754MSBDouble</data_type>
+         </Element_Array>
+          <Axis_Array>
+            <axis_name>hkp_channel</axis_name>
+            <elements>99</elements>
+            <sequence_number>1</sequence_number>
+         </Axis_Array>
+          <Axis_Array>
+            <axis_name>n/a</axis_name>
+            <elements>8</elements>
+            <sequence_number>2</sequence_number>
+         </Axis_Array>
+         <Special_Constants>
+            <invalid_constant>-1.0E31</invalid_constant>
+            <valid_maximum>1.0E31</valid_maximum>
+            <valid_minimum>-1.0E31</valid_minimum>
+         </Special_Constants>
+      </Array>
+   </File_Area_Observational>
+</Product_Observational>
