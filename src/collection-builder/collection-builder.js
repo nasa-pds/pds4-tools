@@ -193,8 +193,12 @@ var main = function(args)
 		}
 		
 		// Get collection id and output file name
-		options.id = content[product].Identification_Area.logical_identifier;
-		options.output = path.normalize(path.join(path.dirname(options.collection), content[product].File_Area_Inventory.File.file_name));
+		if(options.id.length == 0) {	// Set from label - otherwise command line option overrides
+			options.id = content[product].Identification_Area.logical_identifier;
+		}
+		if(options.output.length == 0) {	// Set from label - otherwise command line option overrides
+			options.output = path.normalize(path.join(path.dirname(options.collection), content[product].File_Area_Inventory.File.file_name));
+		}
 		
 		// Read the XML file up to the root document tag (to <Identification_Area>)
 		// This is a cludge because fastXMLParser does no preserve processing instructions
@@ -368,6 +372,8 @@ var main = function(args)
 					var product = Object.keys(collectionLabel)[0];
 					// console.log("Product type: " + product);
 					// console.log(JSON.stringify(collectionLabel, null, 3));
+					collectionLabel[product].Identification_Area.logical_identifier = options.id;
+					collectionLabel[product].File_Area_Inventory.File.file_name = path.basename(options.output);
 					collectionLabel[product].File_Area_Inventory.File.file_size = { "#text" : stat.size.toString(), "@_unit": "byte" };
 					collectionLabel[product].File_Area_Inventory.File.creation_date_time = stat.mtime.toISOString();
 					collectionLabel[product].File_Area_Inventory.File.md5_checksum = md5Checksum;
