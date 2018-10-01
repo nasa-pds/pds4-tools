@@ -219,10 +219,15 @@ var main = function(args)
 	var targetList = [];
 	var primaryResultSummary = {};
 	var observingSystem = [];
-	var inventory = fs.createWriteStream(options.output, {
+	
+	var inventory = null;
+	
+	if(options.output) {	// Open iventory output file
+		inventory = fs.createWriteStream(options.output, {
 			flags: 'w' // 'w' overwrite (old data will be lost)
 		});
-		
+	}
+	
 	walk.walk(pathname, walkOptions)
 	    .on("file", function (root, fileStats, next) {
 		    if(fileStats.name.endsWith(".xml")) { 	// Parse
@@ -313,7 +318,9 @@ var main = function(args)
 					}
 					
 					// Write to inventory
-					inventory.write("P," + lid + "::" + vid + "\r\n");	// CR/LF required
+					var invrec = "P," + lid + "::" + vid;
+					if(inventory) {	inventory.write(invrec + "\r\n"); }	// CR/LF required
+					else { console.log(invrec); }
 					records++;
 				}
 		    }
@@ -328,7 +335,7 @@ var main = function(args)
 	  	    next();
 	    })
 	   .on("end", function () {
-		    inventory.end();	// Close inventory file
+		    if(inventory) inventory.end();	// Close inventory file
 			if(options.collection.length > 0) {	// Update collection information
 				if(options.verbose) { console.log('Writing inventory to: ' + options.output); }
 				var stat = fs.statSync(options.output);
