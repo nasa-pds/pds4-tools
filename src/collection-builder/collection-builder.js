@@ -153,6 +153,13 @@ var main = function(args)
 	var pathname = ".";
 	var cnt = 0;
 	var records = 0;
+	
+	// Check arguments - must have a collection id
+	if(options.id.length == 0 && options.collection.length == 0) {
+		console.log("");
+		console.log("Missing collection id. Use -i or -c to specify. Use -h to show help information.");
+		return;
+	}
 
 	if(args.length > 0) { pathname = args[0]; }
 	if(options.verbose) { console.log('Processing: ' + pathname); }
@@ -203,13 +210,6 @@ var main = function(args)
 			labelHeader += delim + buffer; delim = "\n";
 		}
 
-	}
-
-	// Check arguments - must have a collection id
-	if(options.id == "") {
-		console.log("");
-		console.log("Missing collection id. Use -i or -c to specifiy.");
-		return;
 	}
 	
 	if(options.verbose) { console.log("Collection ID: " + options.id); }
