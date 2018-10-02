@@ -11,9 +11,11 @@ Tools to generate and use PDS4 metadata.
   
 ## Tools
 
-[pds-ldd-doc](src/ldd-doc) : Generate Github Flavored Markdown (GFM) documentation for a Local Data Dictionary (LDD) specification file. Suitable for use as a README.md for the LDD.
+[pds-collection-builder](src/collection-builder) : Extract information from a PDS4 labels in a directory and generate a collection inventory. Optionally update a collection label with information harvested from the data products. 
 
 [pds-doi-request](src/doi-request) : Extract information from a PDS4 label and generate an DOI request which can be used with Interagency Data (IAD) web services.
+
+[pds-ldd-doc](src/ldd-doc) : Generate Github Flavored Markdown (GFM) documentation for a Local Data Dictionary (LDD) specification file. Suitable for use as a README.md for the LDD.
 
 ## License
 

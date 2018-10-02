@@ -21,8 +21,8 @@ const crypt = require('crypto');
 // Configure the app
 var options  = yargs
 	.version('1.0.0')
-	.usage('Build a collection index file.\n\nExtract information from a PDS4 labels in a directory and generate a collection inventory. If supplied an existing collection label the label will be updated to match the generated collection inventory file information.\n\nUsage:\n\npds-collection-builder [args] <directory>')
-	.example('$0 -o inventory.csv .', 'generate a collection index for products in the current directory and write inventory in "inventory.csv"')
+	.usage('Build a collection index file.\n\nExtract information from a PDS4 labels in a directory and generate a collection inventory. If supplied an existing collection label the label will be updated to match the generated collection inventory file information.\n\nWhen a collection label is provided the tool will update the Time_Coordinates.start_date_time, Time_Coordinates.stop_date_time and File_Area_Inventory.File information based on information found during the scan. It will also replace the contents Primary_Results_Summary, Target_Information and Observing_System with a roll-up of information found in each of these sections in the data products.\n\nUsage:\n\npds-collection-builder [args] <directory>')
+	.example('$0 -i urn:nasa:pds:mission.collection -o inventory.csv .', 'generate a collection index for products in the current directory and write inventory in "inventory.csv"')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
 	.showHelpOnFail(false, 'Specify --help for available options')
 	.help('h')
@@ -45,9 +45,24 @@ var options  = yargs
 		// Collection ID
 		'i' : {
 			alias : 'id',
-			description: 'Collection ID for the inventory.',
+			description: 'Logical ID for the collection.',
 			type: 'string',
 			default: ""
+		},
+
+		// Version ID
+		'd' : {
+			alias : 'vid',
+			description: 'Version ID for the collection.',
+			type: 'string',
+			default: ""
+		},
+
+		// Append to inventory
+		'a' : {
+			alias : 'append',
+			description: 'Append the found products to the current inventory',
+			type: 'boolean'
 		},
 
 		// Collection label file
@@ -196,8 +211,15 @@ var main = function(args)
 		if(options.id.length == 0) {	// Set from label - otherwise command line option overrides
 			options.id = content[product].Identification_Area.logical_identifier;
 		}
+		if(options.vid.length == 0) {	// Set from label - otherwise command line option overrides
+			options.vid = content[product].Identification_Area.version_id;
+		}
 		if(options.output.length == 0) {	// Set from label - otherwise command line option overrides
 			options.output = path.normalize(path.join(path.dirname(options.collection), content[product].File_Area_Inventory.File.file_name));
+		}
+		
+		if(options.append) {	// Start with current record count
+			records = parseInt(content[product].File_Area_Inventory.Inventory.records);
 		}
 		
 		// Read the XML file up to the root document tag (to <Identification_Area>)
@@ -225,10 +247,13 @@ var main = function(args)
 	var observingSystem = [];
 	
 	var inventory = null;
+	var outputFlags = 'w'; // 'w' overwrite (old data will be lost)
+	
+	if(options.append) outputFlags = 'a';	// 'a' append to file
 	
 	if(options.output) {	// Open iventory output file
 		inventory = fs.createWriteStream(options.output, {
-			flags: 'w' // 'w' overwrite (old data will be lost)
+			flags: outputFlags
 		});
 	}
 	
@@ -373,6 +398,7 @@ var main = function(args)
 					// console.log("Product type: " + product);
 					// console.log(JSON.stringify(collectionLabel, null, 3));
 					collectionLabel[product].Identification_Area.logical_identifier = options.id;
+					if(options.vid.length > 0) collectionLabel[product].Identification_Area.version_id = options.vid;
 					collectionLabel[product].File_Area_Inventory.File.file_name = path.basename(options.output);
 					collectionLabel[product].File_Area_Inventory.File.file_size = { "#text" : stat.size.toString(), "@_unit": "byte" };
 					collectionLabel[product].File_Area_Inventory.File.creation_date_time = stat.mtime.toISOString();

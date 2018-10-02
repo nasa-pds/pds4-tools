@@ -6,6 +6,8 @@ Extract information from a PDS4 labels in a directory and generate a collection
 inventory. If supplied an existing collection label the label will be updated to
 match the generated collection inventory file information.
 
+When a collection label is provided the tool will update the Time_Coordinates.start_date_time, Time_Coordinates.stop_date_time and File_Area_Inventory.File information based on information found during the scan. It will also replace the contents Primary_Results_Summary, Target_Information and Observing_System with a roll-up of information found in each of these sections in the data products.
+
 ## Installation
 "pds-doi-request" is part of the "pds4-tools" package and can be installed with from NPM.
 
@@ -25,7 +27,8 @@ pds-collection-builder [args] <directory>
   <dt>--version</dt><dd>Show version number                                [boolean]</dd>
   <dt>-h, --help</dt><dd>Show information about the app.                    [boolean]</dd>
   <dt>-v, --verbose</dt><dd>Show progress and other performance information.   [boolean]</dd>
-  <dt>-i, --id</dt><dd>Collection ID for the inventory.      [string] [default: ""]</dd>
+  <dt>-i, --id</dt><dd>Logical ID for the collection.      [string] [default: ""]</dd>
+  <dt>-d, --version</dt><dd>Version ID for the collection.      [string] [default: ""]</dd>
   <dt>-c, --collection</dt><dd>File name of the collection label.    [string] [default: ""]</dd>
   <dt>-o, --output</dt><dd>Output file name for collection inventory.
                                                           [string] [default: ""]</dd>
@@ -45,12 +48,12 @@ pds-collection-builder [args] <directory>
   pds-collection-builder -c collection.lbl .
 ```
 
-- Generate a collection index for products in the current directory that belong to the collection 'urn:nasa:pds:maven.static.c:data.2a_hkp', write inventory in "collection.csv" and update the collection label 'collection.lbl' with the roll-up of information from the products.
+- Generate a collection index for products in the current directory that belong to the collection 'urn:nasa:pds:maven.static.c:data.2a_hkp', write inventory in "collection.csv" and update the collection label 'collection.xml' with the roll-up of information from the products.
 
-The 'collection.lbl' could be a partially complete collection label such as the example [collection-example.lbl(collection-example.lbl).
+The 'collection.xml' could be a partially complete collection label such as the example [collection-label-example.xml(collection-label-example.xml).
 
 ```
-  pds-collection-builder -i urn:nasa:pds:maven.static.c:data.2a_hkp -o collection.csv -c collection.lbl .
+  pds-collection-builder -i urn:nasa:pds:maven.static.c:data.2a_hkp -o collection.csv -c collection.xml .
 ```
 
 ## License
