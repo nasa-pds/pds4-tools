@@ -1,6 +1,8 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 pds-collection-builder
 ==========================
-Build a collection index file.
+Build a collection inventory file and optional update a collection label.
 
 Extract information from a PDS4 labels in a directory and generate a collection
 inventory. If supplied an existing collection label the label will be updated to
@@ -62,7 +64,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-       [http://www.apache.org/licenses/LICENSE-2.0]
+[http://www.apache.org/licenses/LICENSE-2.0](https://opensource.org/licenses/Apache-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
