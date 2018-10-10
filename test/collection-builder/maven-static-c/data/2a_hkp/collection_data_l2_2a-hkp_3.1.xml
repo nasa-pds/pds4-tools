@@ -45,7 +45,7 @@
       <type>Mission</type>
       <Internal_Reference>
         <lid_reference>urn:nasa:pds:context:investigation:mission.maven</lid_reference>
-        <reference_type>collection_to_investigation</reference_type>
+        <reference_type>data_to_investigation</reference_type>
       </Internal_Reference>
     </Investigation_Area>
     <Observing_System>
@@ -91,7 +91,7 @@
   <File_Area_Inventory>
     <File>
       <file_name>collection_data_l2_2a-hkp_3.1.csv</file_name>
-      <creation_date_time>2018-10-10T15:07:22.249Z</creation_date_time>
+      <creation_date_time>2018-10-10T19:58:44.882Z</creation_date_time>
       <file_size unit="byte">96450</file_size>
       <md5_checksum>b673b4e0bb28d041f200b76ab4f6e813</md5_checksum>
     </File>

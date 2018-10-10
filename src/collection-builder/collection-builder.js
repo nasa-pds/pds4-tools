@@ -20,7 +20,7 @@ const crypt = require('crypto');
 
 // Configure the app
 var options  = yargs
-	.version('1.0.0')
+	.version('1.0.1')
 	.usage('Build a collection index file.\n\nExtract information from a PDS4 labels in a directory and generate a collection inventory. If supplied an existing collection label the label will be updated to match the generated collection inventory file information.\n\nWhen a collection label is provided the tool will update the Time_Coordinates.start_date_time, Time_Coordinates.stop_date_time and File_Area_Inventory.File information based on information found during the scan. It will also replace the contents Primary_Results_Summary, Target_Information and Observing_System with a roll-up of information found in each of these sections in the data products.\n\nUsage:\n\npds-collection-builder [args] <directory>')
 	.example('$0 -i urn:nasa:pds:mission.collection -o inventory.csv .', 'generate a collection index for products in the current directory and write inventory in "inventory.csv"')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
@@ -245,6 +245,7 @@ var main = function(args)
 	var targetList = [];
 	var primaryResultSummary = {};
 	var observingSystem = [];
+	var investigationArea = [];
 	
 	var inventory = null;
 	var outputFlags = 'w'; // 'w' overwrite (old data will be lost)
@@ -345,7 +346,20 @@ var main = function(args)
 					} catch(e) {
 						// Do nothing - Element is optional
 					}
-					
+
+					// Investigation area
+					try{
+						// Observing System
+						var Investigation_Area = asArray(content[product].Observation_Area.Investigation_Area);
+						
+						if(Investigation_Area.length > 0) {	// Merge
+							investigationArea = mergeArray(investigationArea, Investigation_Area);
+						}
+
+					} catch(e) {
+						// Do nothing - Element is optional
+					}
+										
 					// Write to inventory
 					var invrec = "P," + lid + "::" + vid;
 					if(inventory) {	inventory.write(invrec + "\r\n"); }	// CR/LF required
@@ -391,6 +405,8 @@ var main = function(args)
 						console.log(JSON.stringify(primaryResultSummary, null, 3));
 						console.log('   Observing_System:');
 						console.log(JSON.stringify(observingSystem, null, 3));
+						console.log('   Investigation_Area:');
+						console.log(JSON.stringify(investigationArea, null, 3));
 					}
 					
 					// Update label
@@ -409,6 +425,7 @@ var main = function(args)
 					collectionLabel[product].Context_Area.Target_Identification = targetList;
 					collectionLabel[product].Context_Area.Primary_Result_Summary = primaryResultSummary;
 					collectionLabel[product].Context_Area.Observing_System = observingSystem;
+					collectionLabel[product].Context_Area.Investigation_Area = investigationArea;
 
 					var writer = new XMLEngine({
 						ignoreAttributes: false,
