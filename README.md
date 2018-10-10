@@ -15,7 +15,7 @@ Tools to generate and use PDS4 metadata.
   
 ## Tools
 
-[pds-collection-builder](src/collection-builder) : Extract information from a PDS4 labels in a directory and generate a collection inventory. Optionally update a collection label with information harvested from the data products. 
+[pds-collection-builder](src/collection-builder) : Extract information from PDS4 labels in a directory and generate a collection inventory. Optionally update a collection label with information harvested from the data products. 
 
 [pds-doi-request](src/doi-request) : Extract information from a PDS4 label and generate an DOI request which can be used with Interagency Data (IAD) web services.
 

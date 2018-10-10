@@ -47,7 +47,7 @@ pds-collection-builder [args] <directory>
 - Update a collection product label with a fresh generation of a collection index. The collection ID in the collection label will be used to determine which products to include in the collection inventory. The collection index will be written into the file referenced in the collection label. 
 
 ```
-  pds-collection-builder -c collection.lbl .
+  pds-collection-builder -c collection.xml .
 ```
 
 - Generate a collection index for products in the current directory that belong to the collection 'urn:nasa:pds:maven.static.c:data.2a_hkp', write inventory in "collection.csv" and update the collection label 'collection.xml' with the roll-up of information from the products.
