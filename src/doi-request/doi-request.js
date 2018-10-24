@@ -17,7 +17,7 @@ const util = require('util');
  
 // Configure the app
 var options  = yargs
-	.version('1.0.0')
+	.version('1.0.1')
 	.usage('Extract information from a PDS4 label and generate an DOI request which can be used with Interagency Data (IAD) web services.\n\nUsage:\n\n$0 [args] <files...>')
 	.example('$0 example.xml', 'generate a DOI request')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
@@ -31,6 +31,16 @@ var options  = yargs
 			alias : 'help',
 			description: 'Show information about the app.'
 		},		
+		
+		// Output
+		'o' : {
+			alias : 'output',
+			description: 'Output file.',
+			type: 'string',
+			default: null
+
+		},
+		
 		// Collection product type
 		'c' : {
 			alias : 'collection',
@@ -42,14 +52,16 @@ var options  = yargs
 			alias : 'reserve',
 			description: 'Reserve generated DOI and do not publically release immeadiately.'
 		},	
+		
 		// Author list (creators)
 		'u' : {
 			alias : 'author',
 			description: 'Author list. Separate names with semi-colon. Names are first, last[, middle]',
 			type: 'string',
-			default: ""
+			default: null
 
 		},
+		
 		// Publisher
 		'p' : {
 			alias : 'publisher',
@@ -58,6 +70,7 @@ var options  = yargs
 			default: "NASA's Planetary Data System (PDS)"
 
 		},
+		
 		// Sponsor
 		's' : {
 			alias : 'sponsor',
@@ -66,6 +79,7 @@ var options  = yargs
 			default: "National Aeronautics and Space Administration (NASA)"
 
 		},
+		
 		// Contact Name
 		'n' : {
 			alias : 'name',
@@ -74,14 +88,16 @@ var options  = yargs
 			default: "PDS Operator"
 
 		},
+		
 		// Contact Organization
-		'o' : {
+		'g' : {
 			alias : 'organization',
 			description: 'Name of the contact organization.',
 			type: 'string',
 			default: "Planetary Data System (PDS)"
 
 		},
+		
 		// Contact Email
 		'e' : {
 			alias : 'email',
@@ -90,6 +106,7 @@ var options  = yargs
 			default: "pds-operator@jpl.nasa.gov"
 
 		},
+		
 		// Contact telephone number
 		't' : {
 			alias : 'phone',
@@ -98,6 +115,7 @@ var options  = yargs
 			default: "818.393.7165"
 
 		},
+		
 		// Availability
 		'a' : {
 			alias : 'availability',
@@ -106,14 +124,16 @@ var options  = yargs
 			default: "NSSDCA"
 
 		},
+		
 		// Landing page URL
-		'l' : {
+		'n' : {
 			alias : 'landing',
 			description: 'The landing page URL.',
 			type: 'string',
 			default: "https://pds.jpl.nasa.gov/ds-view/pds/viewCollection.jsp?identifier=%s"
 
 		},
+		
 		// Publication date 
 		'd' : {
 			alias : 'date',
@@ -122,13 +142,29 @@ var options  = yargs
 			default: ""
 
 		},
-		// Publication date 
+		
+		// Contributor 
 		'b' : {
-			alias : 'contrib',
+			alias : 'contributor',
 			description: 'Contributor organization.',
 			type: 'string',
 			default: "PDS Planetary Plasma Interactions (PPI) Node"
-
+		},
+		
+		// Country 
+		'y' : {
+			alias : 'country',
+			description: 'Standard country code.',
+			type: 'string',
+			default: "US"
+		},
+		
+		// Language 
+		'l' : {
+			alias : 'language',
+			description: 'Language for text.',
+			type: 'string',
+			default: "English"
 		},
 		
 
@@ -136,7 +172,27 @@ var options  = yargs
 	.argv
 	;
 
+// Global variables
 var args = options._;	// Remaining non-hyphenated arguments
+var outputFile = null;	// None defined.
+
+/** 
+ * Write to output file if defined, otherwise to console.log()
+ **/
+var outputWrite = function(str) {
+	if(outputFile == null) {
+		console.log(str);
+	} else {
+		outputFile.write(str);
+	}
+}
+
+/**
+ * Close an output file if one is assigned.
+ **/
+var outputEnd = function() {
+	if(outputFile) { outputFile.end(); outputFile = null }
+}
 
 /**
  * Search through a Modification_History and find the most recent modification date.
@@ -175,6 +231,31 @@ var formatDate = function(isoDate) {
  **/
 var formatProduct = function(productType) {
 		return "PDS4 " + productType.replace(/^Product_/, "");
+}
+
+/** 
+ * Parse any author list string into an array of Author objects
+ *
+ * Author string has the format "last, first[, middle]" with the list of authors separated by a semi-colon (;)
+ **/
+var parseAuthors = function(authors) {
+	var list = [];
+	
+	var alist = authors.split(";");
+	for(var i = 0; i < alist.length; i++) {
+		var names = alist[i].split(",");
+		var author = {
+			// "first_name": "",
+			// "last_name": "",
+			// "middle_name": "",
+			"affiliations": []
+		};
+		if(names.length > 0) author.last_name = names[0];
+		if(names.length > 1) author.first_name = names[1];
+		if(names.length > 2) author.middle_name = names[2];
+		list.push(author);
+	}
+	return list;
 }
 
 /** 
@@ -217,6 +298,11 @@ var main = function(args)
 	  yargs.showHelp();
 	  return;
 	}
+
+	// Output
+	if(options.output) {
+		outputFile = fs.createWriteStream(options.output);
+	}
 	
 	var productType = "Dataset";
 	
@@ -237,13 +323,11 @@ var main = function(args)
 		description = content[product].Identification_Area.Citation_Information.description;
 	}
 
-	// Creators (author list)
-	var creators = "undefined";
+	// author list
 	if(content[product].Identification_Area.Citation_Information) {	// Use author list		
-		creators = content[product].Identification_Area.Citation_Information.author_list;
-	}
-	if(options.author.length > 0) {	// Override 
-		creators = options.author;
+		if(content[product].Identification_Area.Citation_Information.author_list) {
+			options.author = content[product].Identification_Area.Citation_Information.author_list;
+		}
 	}
 	
 	// Publication date
@@ -258,45 +342,112 @@ var main = function(args)
 	// Landing page 
 	var landing = util.format(options.landing, lid);
 	
-	// console.log(JSON.stringify(content, 3, null));
-	console.dir(content);
-	console.dir(Object.keys(content));
-	console.log(getRecentModification(hist));
+	// Check arguments
+	if( ! options.author) {
+		console.log('Warning: Missing author information. Use "-u" to specify on command line.');
+		options.author = "unknown";
+	}
 	
-	console.log("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-	console.log("<!-- Generated from: " + pathname + " -->" );
-	console.log("");
-	console.log("<records>");
-	console.log("   <record>");
-	console.log("		<title>" + title + "</title>");
-	console.log("		<creators>" + creators + "</creators>");
-	console.log("		<publisher>" + options.publisher + "</publisher>");
-	console.log("		<publication_date>" + formatDate(pubdate) + "</publication_date>");
+	// IAD2 JSON format
+	var iad2 = {
+		"records": [{
+			// "id": "221299",	// unique identifier for the record - used for updates
+			// "accession_number" : "unique",	// 
+			"title": title,
+			"description": description,
+			"authors": parseAuthors(options.author),
+			"contributors": [
+				{ "full_name": options.contributor,
+				  "contributor_type": "Editor",
+				  "affiliations": [] 
+				}
+			],
+			// "doi": "10.5072/for-example-purposes/221299",
+			// "doi_infix":"for-example-purposes",
+			"publisher": options.publisher,
+			"country": options.country,	// "US"
+			"product_type": productType,	// "Dataset","Text" or "Collection"
+			"product_type_specific": formatProduct(product),
+			"language": options.language,	// "English"
+			"publication_date": formatDate(pubdate),
+			"date_added": formatDate(pubdate),
+			// "date_updated":"2017-11-27",
+			"sponsoring_organization": options.sponsor,
+			"research_organization": options.contrib,
+			// "report_numbers": "98776",
+			// "contract_numbers": "DE-39043-2017",
+			"other_numbers": lid + '::' + version ,
+			"availability": options.availability,
+			"keywords": keywords,
+			// "related_identifiers": [
+			//	{ "identifier_value":"10.5072/23432",
+			//	  "identifier_type":"DOI",
+			//	  "relation_type":"Cites"
+			//	}
+			// ]
+		}],
+		"start":0,
+		"total":1
+	}
+	
+	// Conditional additions
 	if(options.reserve) {	// Do not put value in <site_url>
-		console.log("		<site_url/>");
+		iad2.records[0]['status'] = "Reserved";
 	} else {
-		console.log("		<site_url>" + landing + "</site_url>");
+		iad2.records[0]['site_url'] = landing;
 	}
-	console.log("		<product_type>" + productType + "</product_type>");
-	console.log("		<product_type_specific>" + formatProduct(product) + "</product_type_specific>");
-	console.log("		<product_nos>" + lid + "::" + version + "</product_nos>");
-	console.log("		<description>" + description + "</description>");
-	console.log("		<keywords>" + keywords + "</keywords>");
-	console.log("		<related_resource/>");
-	console.log("		<contributor_organizations>" + options.contrib + "</contributor_organizations>");
-	console.log("		<sponsor_org>" + options.sponsor + "</sponsor_org>");
-	console.log("		<contract_nos>" + "</contract_nos>");
-	console.log("		<file_extension/>");
-	console.log("		<availability>" + options.availability + "</availability>");
-	console.log("		<contact_name>" + options.name + "</contact_name>");
-	console.log("		<contact_org>" + options.organization + "</contact_org>");
-	console.log("		<contact_email>" + options.email + "</contact_email>");
-	console.log("		<contact_phone>" + options.phone + "</contact_phone>");
-	if(options.reserve) {
-		console.log("		<set_reserved/>");
+
+	var request = JSON.stringify(iad2.records, null, 3);	// Formatted string
+	if(options.output) {	// Show some instructions
+		console.log('DOI request information can be submitted with the command:');
+		console.log("");
+		console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
+			+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
+		console.log("");
+		var request = JSON.stringify(iad2.records);	// One long string
+
 	}
-	console.log("	</record>");
-	console.log("</records>");
+	outputWrite(request);
+	outputEnd();
+	
+	/*
+	// Old IAD XML format
+	outputWrite('<?xml version="1.0" encoding="UTF-8" ?>');
+	outputWrite('<!-- Generated from: ' + pathname + ' -->');
+	outputWrite('<records start="0" total="1">');
+	outputWrite('   <record>');
+	outputWrite('		<title>' + title + '</title>');
+	outputWrite('		<creators>' + options.author + '</creators>');
+	outputWrite('		<publisher>' + options.publisher + '</publisher>');
+	outputWrite('		<publication_date>' + formatDate(pubdate) + '</publication_date>');
+	if(options.reserve) {	// Do not put value in <site_url>
+		outputWrite('		<site_url/>');
+	} else {
+		outputWrite('		<site_url>' + landing + '</site_url>');
+	}
+	outputWrite('		<product_type>' + productType + '</product_type>');
+	outputWrite('		<product_type_specific>' + formatProduct(product) + '</product_type_specific>');
+	outputWrite('		<product_nos>' + lid + '::' + version + '</product_nos>');
+	outputWrite('		<description>' + description + '</description>');
+	outputWrite('		<keywords>' + keywords + "</keywords>');
+	outputWrite('		<related_resource/>');
+	outputWrite('		<contributor_organizations>' + options.contrib + '</contributor_organizations>');
+	outputWrite('		<sponsor_org>' + options.sponsor + '</sponsor_org>');
+	outputWrite('		<contract_nos>' + '</contract_nos>');
+	outputWrite('		<file_extension/>');
+	outputWrite('		<availability>' + options.availability + '</availability>');
+	outputWrite('		<contact_name>' + options.name + '</contact_name>');
+	outputWrite('		<contact_org>' + options.organization + '</contact_org>');
+	outputWrite('		<contact_email>' + options.email + '</contact_email>');
+	outputWrite('		<contact_phone>' + options.phone + '</contact_phone>');
+	if(outputWrite.reserve) {
+		console.log('		<set_reserved/>');
+	}
+	outputWrite('	</record>');
+	outputWrite('</records>');
+	
+	outputEnd();
+	*/
 	
 }
 
