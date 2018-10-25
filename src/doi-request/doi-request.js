@@ -80,6 +80,7 @@ var options  = yargs
 
 		},
 		
+		/*
 		// Contact Name
 		'n' : {
 			alias : 'name',
@@ -115,6 +116,7 @@ var options  = yargs
 			default: "818.393.7165"
 
 		},
+		*/
 		
 		// Availability
 		'a' : {
@@ -165,6 +167,14 @@ var options  = yargs
 			description: 'Language for text.',
 			type: 'string',
 			default: "English"
+		},
+
+		// Format
+		'f' : {
+			alias : 'format',
+			description: 'Output format.',
+			choices: ['xml', 'json'],
+			default: 'xml'
 		},
 		
 
@@ -265,18 +275,33 @@ var getKeywords = function(product) {
 	var delim = "";
 	var keywords = "";
 	
-	keywords += delim + product.Context_Area.Observing_System.Observing_System_Component.name; delim = ";";
+	if(Array.isArray(product.Context_Area.Observing_System.Observing_System_Component)) {
+		for(var i = 0; i < product.Context_Area.Observing_System.Observing_System_Component.length; i++) {
+			keywords += delim + product.Context_Area.Observing_System.Observing_System_Component[i].name; delim = ";";
+		}		
+	} else {
+		keywords += delim + product.Context_Area.Observing_System.Observing_System_Component.name; delim = ";";
+	}
 	for(var i = 0; i < product.Context_Area.Target_Identification.length; i++) {
 		keywords += delim + product.Context_Area.Target_Identification[i].name; delim = ";";
 	}
 	keywords += delim + product.Context_Area.Investigation_Area.name; delim = ";";
-	keywords += delim + product.Context_Area.Primary_Result_Summary.purpose; delim = ";";
-	keywords += delim + product.Context_Area.Primary_Result_Summary.processing_level; delim = ";";
-	
-	for(var i = 0; i < product.Context_Area.Mission_Area.MAVEN.mission_phase_name.length; i++) {
-		keywords += delim + product.Context_Area.Mission_Area.MAVEN.mission_phase_name[i]; delim = ";";
+	if(product.Context_Area.Primary_Result_Summary) {	// Introduced in PDS4 IM ???
+		keywords += delim + product.Context_Area.Primary_Result_Summary.purpose; delim = ";";
+		keywords += delim + product.Context_Area.Primary_Result_Summary.processing_level; delim = ";";
 	}
 
+	if(product.Context_Area.Mission_Area) {
+		var keys = Object.keys(product.Context_Area.Mission_Area);
+		for(var i = 0; i < keys.length; i++) {
+			if(keys[i].mission_phase_name) {
+				for(var n = 0; n < keys[i].mission_phase_name.length; n++) {
+					keywords += delim + keys[i].mission_phase_name[n]; delim = ";";
+				}
+			}
+		}
+	}
+	
 	if(product.Identification_Area.Citation_Information) {	// Look for keywords	
 		if(product.Identification_Area.Citation_Information.keyword) { 
 			for(var i = 0; i < product.Identification_Area.Citation_Information.keyword.length; i++) {
@@ -401,53 +426,83 @@ var main = function(args)
 	if(options.output) {	// Show some instructions
 		console.log('DOI request information can be submitted with the command:');
 		console.log("");
-		console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
+		console.log('format: ' + options.format);
+		if(options.format == 'json') {
+			console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
+				+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
+			console.log("");
+			var request = JSON.stringify(iad2.records);	// One long string
+			outputWrite(request);
+		} else {
+			console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
+				+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
+			console.log("");
+		}
+	}
+	
+	if(options.format == 'json') {
+		console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/xml" --data' 
 			+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
 		console.log("");
 		var request = JSON.stringify(iad2.records);	// One long string
-
-	}
-	outputWrite(request);
-	outputEnd();
-	
-	/*
-	// Old IAD XML format
-	outputWrite('<?xml version="1.0" encoding="UTF-8" ?>');
-	outputWrite('<!-- Generated from: ' + pathname + ' -->');
-	outputWrite('<records start="0" total="1">');
-	outputWrite('   <record>');
-	outputWrite('		<title>' + title + '</title>');
-	outputWrite('		<creators>' + options.author + '</creators>');
-	outputWrite('		<publisher>' + options.publisher + '</publisher>');
-	outputWrite('		<publication_date>' + formatDate(pubdate) + '</publication_date>');
-	if(options.reserve) {	// Do not put value in <site_url>
-		outputWrite('		<site_url/>');
+		outputWrite(request);
 	} else {
-		outputWrite('		<site_url>' + landing + '</site_url>');
+		// IAD XML format
+		outputWrite('<?xml version="1.0" encoding="UTF-8" ?>');
+		outputWrite('<!-- Generated from: ' + pathname + ' -->');
+		outputWrite('<records start="0" total="1">');
+		outputWrite('   <record>');
+		outputWrite('      <title>' + title + '</title>');
+		outputWrite('      <sponsoring_organization>' + options.sponsor + '</sponsoring_organization>');
+		outputWrite('      <research_organization>' + options.contrib + '</research_organization>');
+		outputWrite('      <product_type>' + productType + '</product_type>');	// "Dataset","Text" or "Collection"
+		outputWrite('      <product_type_specific>' + formatProduct(product) + '</product_type_specific>');
+		outputWrite('      <language>' + options.language + '<language>');	// "English"
+		outputWrite('      <publisher>' + options.publisher + '</publisher>');
+		outputWrite('      <publication_date>' + formatDate(pubdate) + '</publication_date>');
+		outputWrite('      <product_date_added>' + formatDate(pubdate) + '<product_date_added>');
+		outputWrite('      <other_nos>' + lid + '::' + version + '</other_nos>');
+		outputWrite('      <availability>' + options.availability + '</availability>');
+		outputWrite('      <country>' + options.country + '</country>');
+		outputWrite('      <description>' + description + '</description>');
+		if(options.reserve) {	// Do not put value in <site_url>
+			outputWrite('      <site_url/>');
+		} else {
+			outputWrite('      <site_url>' + landing + '</site_url>');
+		}
+		outputWrite('      <keywords>' + keywords + '</keywords>');
+		outputWrite('      <authors>');
+		var authors = parseAuthors(options.author);
+		for(var i = 0; i < authors.length; i++) {
+			outputWrite('         <author>');
+			if(authors[i].first_name)	outputWrite('            <first_name>' + authors[i].first_name + '</first_name>');				
+			if(authors[i].last_name)	outputWrite('            <last_name>' + authors[i].last_name + '</last_name>');				
+			if(authors[i].middle_name)	outputWrite('            <middle_name>' + authors[i].middle_name + '</middle_name>');				
+			outputWrite('         </author>');
+			
+		}
+		outputWrite('      </authors>');
+		outputWrite('      <contributors>');
+		outputWrite('         <full_name>' + options.contributor + '</full_name>');
+		outputWrite('         <contributor_type>Editor</contributor_type>');
+		outputWrite('         <affiliations/>'); 
+		outputWrite('      </contributors>');
+		outputWrite('      <related_identifier/>');			
+		outputWrite('      <contract_numbers>' + '</contract_numbers>');
+		outputWrite('      <availability>' + options.availability + '</availability>');
+		/*
+		outputWrite('      <contact_name>' + options.name + '</contact_name>');
+		outputWrite('      <contact_org>' + options.organization + '</contact_org>');
+		outputWrite('      <contact_email>' + options.email + '</contact_email>');
+		outputWrite('      <contact_phone>' + options.phone + '</contact_phone>');
+		*/
+		if(outputWrite.reserve) {
+			console.log('      <set_reserved/>');
+		}
+		outputWrite('   </record>');
+		outputWrite('</records>');
 	}
-	outputWrite('		<product_type>' + productType + '</product_type>');
-	outputWrite('		<product_type_specific>' + formatProduct(product) + '</product_type_specific>');
-	outputWrite('		<product_nos>' + lid + '::' + version + '</product_nos>');
-	outputWrite('		<description>' + description + '</description>');
-	outputWrite('		<keywords>' + keywords + "</keywords>');
-	outputWrite('		<related_resource/>');
-	outputWrite('		<contributor_organizations>' + options.contrib + '</contributor_organizations>');
-	outputWrite('		<sponsor_org>' + options.sponsor + '</sponsor_org>');
-	outputWrite('		<contract_nos>' + '</contract_nos>');
-	outputWrite('		<file_extension/>');
-	outputWrite('		<availability>' + options.availability + '</availability>');
-	outputWrite('		<contact_name>' + options.name + '</contact_name>');
-	outputWrite('		<contact_org>' + options.organization + '</contact_org>');
-	outputWrite('		<contact_email>' + options.email + '</contact_email>');
-	outputWrite('		<contact_phone>' + options.phone + '</contact_phone>');
-	if(outputWrite.reserve) {
-		console.log('		<set_reserved/>');
-	}
-	outputWrite('	</record>');
-	outputWrite('</records>');
-	
 	outputEnd();
-	*/
 	
 }
 
