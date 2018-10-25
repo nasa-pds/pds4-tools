@@ -426,7 +426,6 @@ var main = function(args)
 	if(options.output) {	// Show some instructions
 		console.log('DOI request information can be submitted with the command:');
 		console.log("");
-		console.log('format: ' + options.format);
 		if(options.format == 'json') {
 			console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
 				+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
