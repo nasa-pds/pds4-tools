@@ -456,10 +456,10 @@ var main = function(args)
 		outputWrite('      <research_organization>' + options.contrib + '</research_organization>');
 		outputWrite('      <product_type>' + productType + '</product_type>');	// "Dataset","Text" or "Collection"
 		outputWrite('      <product_type_specific>' + formatProduct(product) + '</product_type_specific>');
-		outputWrite('      <language>' + options.language + '<language>');	// "English"
+		outputWrite('      <language>' + options.language + '</language>');	// "English"
 		outputWrite('      <publisher>' + options.publisher + '</publisher>');
 		outputWrite('      <publication_date>' + formatDate(pubdate) + '</publication_date>');
-		outputWrite('      <product_date_added>' + formatDate(pubdate) + '<product_date_added>');
+		outputWrite('      <product_date_added>' + formatDate(pubdate) + '</product_date_added>');
 		outputWrite('      <other_nos>' + lid + '::' + version + '</other_nos>');
 		outputWrite('      <availability>' + options.availability + '</availability>');
 		outputWrite('      <country>' + options.country + '</country>');
