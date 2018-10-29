@@ -38,7 +38,13 @@ var options  = yargs
 			description: 'Output file.',
 			type: 'string',
 			default: null
-
+		},
+		
+		// Pretty-print
+		'x' : {
+			alias : 'pretty',
+			description: 'Pretty output.',
+			type: 'boolean'
 		},
 		
 		// Collection product type
@@ -194,6 +200,7 @@ var outputWrite = function(str) {
 		console.log(str);
 	} else {
 		outputFile.write(str);
+		if(options.pretty) outputFile.write("\n");
 	}
 }
 
@@ -234,6 +241,22 @@ var formatDate = function(isoDate) {
 	if(month.length < 2) month = "0" + month;
 	
 	return month + "/" + day + "/" + d.getFullYear();
+}
+
+/**
+ * Format an ISO data string into the required format for an OSTI IAD request.
+ **/
+var formatDateYYYYMMDD = function(isoDate) {
+	var d = new Date(isoDate);
+	var year = d.getFullYear();
+	var day = d.getDate().toString();
+	var month = d.getMonth().toString();
+	
+	// Add zero padding (if needed)
+	if(day.length < 2) day = "0" + day;
+	if(month.length < 2) month = "0" + month;
+	
+	return year + "-" + month + "-" + day;
 }
 
 /**
@@ -430,7 +453,7 @@ var main = function(args)
 			console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
 				+ ' @' + options.output + ' https://www.osti.gov/iad2/api/records');
 			console.log("");
-			var request = JSON.stringify(iad2.records);	// One long string
+			if( ! options.pretty) { request = JSON.stringify(iad2.records); }	// One long string
 			outputWrite(request);
 		} else {
 			console.log('curl -u LOGINNAME:PASSWORD -X POST -H "Content-Type: application/json" --data' 
@@ -458,8 +481,8 @@ var main = function(args)
 		outputWrite('      <product_type_specific>' + formatProduct(product) + '</product_type_specific>');
 		outputWrite('      <language>' + options.language + '</language>');	// "English"
 		outputWrite('      <publisher>' + options.publisher + '</publisher>');
-		outputWrite('      <publication_date>' + formatDate(pubdate) + '</publication_date>');
-		outputWrite('      <product_date_added>' + formatDate(pubdate) + '</product_date_added>');
+		outputWrite('      <publication_date>' + formatDateYYYYMMDD(pubdate) + '</publication_date>');
+		outputWrite('      <product_date_added>' + formatDateYYYYMMDD(pubdate) + '</product_date_added>');
 		outputWrite('      <other_nos>' + lid + '::' + version + '</other_nos>');
 		outputWrite('      <availability>' + options.availability + '</availability>');
 		outputWrite('      <country>' + options.country + '</country>');
