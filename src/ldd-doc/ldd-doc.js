@@ -15,7 +15,7 @@ const fastXmlParser = require('fast-xml-parser');
  
 // Configure the app
 var options  = yargs
-	.version('1.0.1')
+	.version('1.0.2')
 	.usage('Generate documentation for an PDS4 LDD.\n\nRead and LDD specification file and generate documentation in Github Flavored Markdown.\n\n$0 [args] <files...>')
 	.example('$0 example.xml', 'generate documentation for the LDD specification')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
@@ -135,7 +135,7 @@ var main = function(args)
 			console.log("--------------------------------------- | ----------------------------");
 			for(let j = 0; j < d.DD_Permissible_Value.length; j++) {
 				var v = d.DD_Permissible_Value[j];
-				console.log(v.value + " | " + v.value_meaning);
+				console.log(v.value + " | " + v.value_meaning.replace(/[\r\n]+/g, "").replace(/ +/g, " ") );
 			}
 		}		
 		console.log("");	
