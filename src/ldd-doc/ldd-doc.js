@@ -15,7 +15,7 @@ const fastXmlParser = require('fast-xml-parser');
  
 // Configure the app
 var options  = yargs
-	.version('1.0.0')
+	.version('1.0.1')
 	.usage('Generate documentation for an PDS4 LDD.\n\nRead and LDD specification file and generate documentation in Github Flavored Markdown.\n\n$0 [args] <files...>')
 	.example('$0 example.xml', 'generate documentation for the LDD specification')
 	.epilog("Development funded by NASA's PDS project at UCLA.")
@@ -80,17 +80,28 @@ var main = function(args)
 		console.log("### " + c.name);			
 		console.log(c.definition);			
 		console.log("");			
-		console.log("Attribute    | Min Occur. | Max Occur.");
-		console.log("------------ | ---------- | -----------");
-		// Fix up - make single occurrence of some elements an array
+		console.log("Attribute    | Min Occur. | Max Occur.  ");
+		console.log("------------ | ---------- | ----------- ");
+		// Fix up - make single occurrence of some elements as array
 		if( ! Array.isArray(c.DD_Association ) ) { c.DD_Association = new Array(c.DD_Association); }
 		for(let j = 0; j < c.DD_Association.length; j++) {
 			var a = c.DD_Association[j];
 			// Either "local_identifier" or "identifier_reference"
 			var value = a.local_identifier;
+			var name = "";
 			if( ! value ) value = a.identifier_reference;
-		
-			console.log(localName(value) + " | " + a.minimum_occurrences + " | " + a.maximum_occurrences);
+			if(Array.isArray(value)) {
+				var list = "";
+				var delim = ", ";
+				for(let k = 0; k < value.length; k++) {
+					name = localName(value[k]);
+					if(name == "XSChoice#") { list += "Choose: "; }
+					else { list += delim + name; }
+				}
+			} else { // Single value
+				name = localName(value);
+			}
+			console.log(name + " | " + a.minimum_occurrences + " | " + a.maximum_occurrences);
 		}
 	}
 	

@@ -252,7 +252,7 @@ var main = function(args)
 	
 	if(options.append) outputFlags = 'a';	// 'a' append to file
 	
-	if(options.output) {	// Open iventory output file
+	if(options.output) {	// Open inventory output file
 		inventory = fs.createWriteStream(options.output, {
 			flags: outputFlags
 		});
