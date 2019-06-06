@@ -298,22 +298,31 @@ var getKeywords = function(product) {
 	var delim = "";
 	var keywords = "";
 	
-	if(Array.isArray(product.Context_Area.Observing_System.Observing_System_Component)) {
-		for(var i = 0; i < product.Context_Area.Observing_System.Observing_System_Component.length; i++) {
-			keywords += delim + product.Context_Area.Observing_System.Observing_System_Component[i].name; delim = ";";
-		}		
-	} else {
-		keywords += delim + product.Context_Area.Observing_System.Observing_System_Component.name; delim = ";";
+	if(product.Context_Area.Observing_System) {
+		if(Array.isArray(product.Context_Area.Observing_System.Observing_System_Component)) {
+			for(var i = 0; i < product.Context_Area.Observing_System.Observing_System_Component.length; i++) {
+				keywords += delim + product.Context_Area.Observing_System.Observing_System_Component[i].name; delim = ";";
+			}		
+		} else {
+			keywords += delim + product.Context_Area.Observing_System.Observing_System_Component.name; delim = ";";
+		}
 	}
-	for(var i = 0; i < product.Context_Area.Target_Identification.length; i++) {
-		keywords += delim + product.Context_Area.Target_Identification[i].name; delim = ";";
+	
+	if(product.Context_Area.Target_Identification) {
+		if(Array.isArray(product.Context_Area.Target_Identification)) {
+			for(var i = 0; i < product.Context_Area.Target_Identification.length; i++) {
+				keywords += delim + product.Context_Area.Target_Identification[i].name; delim = ";";
+			}
+		} else {
+			keywords += delim + product.Context_Area.Target_Identification; delim = ";";			
+		}
+		keywords += delim + product.Context_Area.Investigation_Area.name; delim = ";";
+		if(product.Context_Area.Primary_Result_Summary) {	// Introduced in PDS4 IM ???
+			keywords += delim + product.Context_Area.Primary_Result_Summary.purpose; delim = ";";
+			keywords += delim + product.Context_Area.Primary_Result_Summary.processing_level; delim = ";";
+		}
 	}
-	keywords += delim + product.Context_Area.Investigation_Area.name; delim = ";";
-	if(product.Context_Area.Primary_Result_Summary) {	// Introduced in PDS4 IM ???
-		keywords += delim + product.Context_Area.Primary_Result_Summary.purpose; delim = ";";
-		keywords += delim + product.Context_Area.Primary_Result_Summary.processing_level; delim = ";";
-	}
-
+	
 	if(product.Context_Area.Mission_Area) {
 		var keys = Object.keys(product.Context_Area.Mission_Area);
 		for(var i = 0; i < keys.length; i++) {
@@ -327,8 +336,12 @@ var getKeywords = function(product) {
 	
 	if(product.Identification_Area.Citation_Information) {	// Look for keywords	
 		if(product.Identification_Area.Citation_Information.keyword) { 
-			for(var i = 0; i < product.Identification_Area.Citation_Information.keyword.length; i++) {
-				keywords += delim + product.Identification_Area.Citation_Information.keyword[i]; delim = ";";
+			if(Array.isArray(product.Identification_Area.Citation_Information.keyword)) {
+				for(var i = 0; i < product.Identification_Area.Citation_Information.keyword.length; i++) {
+					keywords += delim + product.Identification_Area.Citation_Information.keyword[i]; delim = ";";
+				}
+			} else {
+				keywords += delim + product.Identification_Area.Citation_Information.keyword; delim = ";";			
 			}
 		}
 	}
