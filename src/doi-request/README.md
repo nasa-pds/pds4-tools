@@ -25,7 +25,7 @@ pds-doi-request [args] <files...>
   <dt>--version</dt><dd>Show version number                              [boolean]</dd>
   <dt>-h, --help</dt><dd>Show information about the app.                  [boolean]</dd>
   <dt>-c, --collection</dt><dd>Submit as a collection. Use for document collection, but
-                      not for data or borwse collections.</dd>
+                      not for data or browse collections.</dd>
   <dt>-r, --reserve</dt><dd>Reserve generated DOI and do not publically release
                       immeadiately.</dd>
   <dt>-u, --author</dt><dd>Author list. Separate names with semi-colon. Names are
